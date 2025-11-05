@@ -1,0 +1,20 @@
+# Production image for FurEverHome backend API
+FROM node:18-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Install production dependencies
+COPY package*.json ./
+RUN npm install --omit=dev && npm cache clean --force
+
+# Copy application source
+COPY src ./src
+
+# Ensure uploads directory exists for runtime storage
+RUN mkdir -p uploads
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
